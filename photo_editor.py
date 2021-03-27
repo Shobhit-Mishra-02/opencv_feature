@@ -1,10 +1,13 @@
-"Here we will create a GUI which will work to edit the image"
+"""
+Here we will create a GUI which will work to edit the image
+"""
 
 from tkinter import *
 from tkinter import ttk
 from tkinter import filedialog
 from tkinter import messagebox as msg
 import os
+from PIL import Image, ImageTk
 
 
 class editor_interface:
@@ -13,6 +16,8 @@ class editor_interface:
         self.height = height
         self.root = None
         self.status_var = None
+        self.file_name = None
+        self.pro_img = False
 
     def start_interface(self):
         '''
@@ -37,10 +42,35 @@ class editor_interface:
                 m.add_command(label=menu_lb[i], command=menu_command[i])
             menubar.add_cascade(label=nameofsubmenu, menu=m)
 
-        def newfile():
-            pass
+        def button_pressed(e):
+            print(e.widget.cget('text'))
+
+        # Fuctions for the submenues
         def openfile():
-            pass
+            self.file_name = filedialog.askopenfilename()
+
+            img = Image.open(self.file_name)
+            img = img.resize((500, 500), Image.ANTIALIAS)
+
+            photo = ImageTk.PhotoImage(img)
+
+            Label(f2, text="Original Image").grid(row=0, column=0, pady=4)
+
+            lb = Label(f2, borderwidth=2, relief='sunken', bg='gray')
+            lb['image'] = photo
+            lb.image = photo
+            lb.grid(row=1, column=0)
+
+            self.status_var.set(f"Image: {os.path.basename(self.file_name)}")
+
+            for i in range(len((lt_button))):
+                lt_button[i]['state']='normal'
+
+        def savefile():
+            if self.pro_img == False:
+                msg.showerror("Error", 'First perform the operations on the image.')
+            else:
+                pass
         def Exit():
             self.root.destroy()
 
@@ -53,18 +83,21 @@ class editor_interface:
         def resizing():
             pass
         def about():
-            pass
+            msg.showinfo('About application', "It is a simple GUI to do image editing")
 
+        # Menu of file
         menu_lb=["Open image", "save as", "Exit"]
-        menu_command=[newfile, openfile, Exit]
+        menu_command=[openfile, savefile, Exit]
         nameofsubmenu="File"
         func_for_submenu(menubar, menu_lb, menu_command, nameofsubmenu)
         
+        # Menu of customization
         menu_lb=["RGB color", "Merging images", "Crop", "Resizing"]
         menu_command=[RGB_color, merging_images, crop, resizing]
         nameofsubmenu="Customization"
         func_for_submenu(menubar, menu_lb, menu_command, nameofsubmenu)
         
+        # Menu of about
         menu_lb=["About"]
         menu_command=[about]
         nameofsubmenu="About us"
@@ -75,10 +108,11 @@ class editor_interface:
         red_button = None
         blue_button = None
         green_button = None
+        black_button = None
 
         # Lists for the buttons and texts in the buttons
-        lt_button = [gray_button, red_button, blue_button, green_button]
-        lt_txt = ['Gray shade', 'Red shade', 'Blue shade', 'Green shade']
+        lt_button = [gray_button, red_button, blue_button, green_button, black_button]
+        lt_txt = ['Gray shade', 'Red shade', 'Blue shade', 'Green shade', 'Black shade']
 
         # Frame first which on the top of the window
         f1 = Frame(self.root)
@@ -92,6 +126,8 @@ class editor_interface:
         for i in range(len((lt_button))):
             lt_button[i] = ttk.Button(control_frame, text=lt_txt[i])
             lt_button[i].grid(row=0, column=i, pady=3, padx=4)
+            lt_button[i]['state']='disabled'
+            lt_button[i].bind('<Button-1>', button_pressed)
 
         # Second frame which is in the mid of the window
         f2 = Frame(self.root)
