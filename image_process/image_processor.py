@@ -46,19 +46,38 @@ class image_convertor:
         self.result = img
 
         return self.result
+    
+    def color_to_black(self):
+        img = cv.imread(self.filename)
+        img = cv.resize(img, (500,500))
+
+        edges = cv.Canny(img, 100,200)
+
+        self.result = edges
+
+        return self.result
 
         
 
     def show(self):
         cv.imshow('frame', self.result)
         cv.waitKey(0)
-    
-    def save_image(self, image, location):
-        cv.imwrite(f"{location}", image)
+
+class save_file:
+    def __init__(self,image, location):
+        self.image = image
+        self.location = location
+
+    def save_image(self):
+        cv.imwrite(f"{self.location}", self.image)
+
+class Merging_interface:
+    def __init__(self):
+        pass
         
 
 if __name__=="__main__":
     x=image_convertor('image_1.jpg')
     x.color_to_gray()
     x.show()
-    x.save_image()
+    # x.save_image()

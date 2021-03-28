@@ -1,5 +1,6 @@
 """
 Here we will create a GUI which will work to edit the image
+Author : Shobhit Mishra
 """
 
 from tkinter import *
@@ -19,7 +20,7 @@ class editor_interface:
         self.status_var = None
         self.file_name = None
         self.pro_img = False
-        self.img_slot=None
+        self.img_slot = None
 
     def start_interface(self):
         '''
@@ -45,13 +46,13 @@ class editor_interface:
             menubar.add_cascade(label=nameofsubmenu, menu=m)
 
         def button_pressed(e):
-            
+
             convertor = image_processor.image_convertor(self.file_name)
-            
-            if e.widget.cget('text')=='Gray shade':
+
+            if e.widget.cget('text') == 'Gray shade':
                 img = convertor.color_to_gray()
                 self.img_slot = img
-                
+
                 img = Image.fromarray(img)
 
                 Label(f2, text='Processed Image').grid(row=0, column=1)
@@ -62,11 +63,11 @@ class editor_interface:
                 lb.image = image
                 lb.grid(row=1, column=1)
                 self.pro_img = True
-            
-            elif e.widget.cget('text')=='Red shade':
+
+            elif e.widget.cget('text') == 'Red shade':
                 img = convertor.color_to_red()
                 self.img_slot = img
-                
+
                 img = Image.fromarray(img)
 
                 Label(f2, text='Processed Image').grid(row=0, column=1)
@@ -77,11 +78,11 @@ class editor_interface:
                 lb.image = image
                 lb.grid(row=1, column=1)
                 self.pro_img = True
-            
-            elif e.widget.cget('text')=='Blue shade':
+
+            elif e.widget.cget('text') == 'Blue shade':
                 img = convertor.color_to_blue()
                 self.img_slot = img
-                
+
                 img = Image.fromarray(img)
 
                 Label(f2, text='Processed Image').grid(row=0, column=1)
@@ -92,11 +93,11 @@ class editor_interface:
                 lb.image = image
                 lb.grid(row=1, column=1)
                 self.pro_img = True
-            
-            elif e.widget.cget('text')=='Green shade':
+
+            elif e.widget.cget('text') == 'Green shade':
                 img = convertor.color_to_green()
                 self.img_slot = img
-                
+
                 img = Image.fromarray(img)
 
                 Label(f2, text='Processed Image').grid(row=0, column=1)
@@ -107,13 +108,23 @@ class editor_interface:
                 lb.image = image
                 lb.grid(row=1, column=1)
                 self.pro_img = True
-            elif e.widget.cget('text')=='Black shade':
-                pass
-           
-            
-            
+            elif e.widget.cget('text') == 'Black shade':
+                img = convertor.color_to_black()
+                self.img_slot = img
+
+                img = Image.fromarray(img)
+
+                Label(f2, text='Processed Image').grid(row=0, column=1)
+
+                lb = Label(f2)
+                image = ImageTk.PhotoImage(img)
+                lb['image'] = image
+                lb.image = image
+                lb.grid(row=1, column=1)
+                self.pro_img = True
 
         # Fuctions for the submenues
+
         def openfile():
             self.file_name = filedialog.askopenfilename()
 
@@ -132,43 +143,52 @@ class editor_interface:
             self.status_var.set(f"Image: {os.path.basename(self.file_name)}")
 
             for i in range(len((lt_button))):
-                lt_button[i]['state']='normal'
+                lt_button[i]['state'] = 'normal'
 
         def savefile():
             if self.pro_img == False:
-                msg.showerror("Error", 'First perform the operations on the image.')
+                msg.showerror(
+                    "Error", 'First perform the operations on the image.')
             else:
-                
+                location = filedialog.asksaveasfile(defaultextension=".jpg", filetypes=[(
+                    "jpg Image", "*.jpg"), ("png Image", "*.png"), ("jpeg Image", "*.jpeg")])
+                img_saver = image_processor.save_file(image=self.img_slot,location=location)
+
         def Exit():
             self.root.destroy()
 
         def RGB_color():
             pass
+
         def merging_images():
             pass
+
         def crop():
             pass
+
         def resizing():
             pass
+
         def about():
-            msg.showinfo('About application', "It is a simple GUI to do image editing")
+            msg.showinfo('About application',
+                         "It is a simple GUI to do image editing")
 
         # Menu of file
-        menu_lb=["Open image", "save as", "Exit"]
-        menu_command=[openfile, savefile, Exit]
-        nameofsubmenu="File"
+        menu_lb = ["Open image", "save as", "Exit"]
+        menu_command = [openfile, savefile, Exit]
+        nameofsubmenu = "File"
         func_for_submenu(menubar, menu_lb, menu_command, nameofsubmenu)
-        
+
         # Menu of customization
-        menu_lb=["RGB color", "Merging images", "Crop", "Resizing"]
-        menu_command=[RGB_color, merging_images, crop, resizing]
-        nameofsubmenu="Customization"
+        menu_lb = ["RGB color", "Merging images", "Crop", "Resizing"]
+        menu_command = [RGB_color, merging_images, crop, resizing]
+        nameofsubmenu = "Customization"
         func_for_submenu(menubar, menu_lb, menu_command, nameofsubmenu)
-        
+
         # Menu of about
-        menu_lb=["About"]
-        menu_command=[about]
-        nameofsubmenu="About us"
+        menu_lb = ["About"]
+        menu_command = [about]
+        nameofsubmenu = "About us"
         func_for_submenu(menubar, menu_lb, menu_command, nameofsubmenu)
 
         # Variables for the buttons
@@ -179,8 +199,10 @@ class editor_interface:
         black_button = None
 
         # Lists for the buttons and texts in the buttons
-        lt_button = [gray_button, red_button, blue_button, green_button, black_button]
-        lt_txt = ['Gray shade', 'Red shade', 'Blue shade', 'Green shade', 'Black shade']
+        lt_button = [gray_button, red_button,
+                     blue_button, green_button, black_button]
+        lt_txt = ['Gray shade', 'Red shade',
+                  'Blue shade', 'Green shade', 'Black shade']
 
         # Frame first which on the top of the window
         f1 = Frame(self.root)
@@ -194,7 +216,7 @@ class editor_interface:
         for i in range(len((lt_button))):
             lt_button[i] = ttk.Button(control_frame, text=lt_txt[i])
             lt_button[i].grid(row=0, column=i, pady=3, padx=4)
-            lt_button[i]['state']='disabled'
+            lt_button[i]['state'] = 'disabled'
             lt_button[i].bind('<Button-1>', button_pressed)
 
         # Second frame which is in the mid of the window
