@@ -8,6 +8,7 @@ from tkinter import filedialog
 from tkinter import messagebox as msg
 import os
 from PIL import Image, ImageTk
+from image_process import image_processor
 
 
 class editor_interface:
@@ -18,6 +19,7 @@ class editor_interface:
         self.status_var = None
         self.file_name = None
         self.pro_img = False
+        self.img_slot=None
 
     def start_interface(self):
         '''
@@ -43,7 +45,73 @@ class editor_interface:
             menubar.add_cascade(label=nameofsubmenu, menu=m)
 
         def button_pressed(e):
-            print(e.widget.cget('text'))
+            
+            convertor = image_processor.image_convertor(self.file_name)
+            
+            if e.widget.cget('text')=='Gray shade':
+                img = convertor.color_to_gray()
+                self.img_slot = img
+                
+                img = Image.fromarray(img)
+
+                Label(f2, text='Processed Image').grid(row=0, column=1)
+
+                lb = Label(f2)
+                image = ImageTk.PhotoImage(img)
+                lb['image'] = image
+                lb.image = image
+                lb.grid(row=1, column=1)
+                self.pro_img = True
+            
+            elif e.widget.cget('text')=='Red shade':
+                img = convertor.color_to_red()
+                self.img_slot = img
+                
+                img = Image.fromarray(img)
+
+                Label(f2, text='Processed Image').grid(row=0, column=1)
+
+                lb = Label(f2)
+                image = ImageTk.PhotoImage(img)
+                lb['image'] = image
+                lb.image = image
+                lb.grid(row=1, column=1)
+                self.pro_img = True
+            
+            elif e.widget.cget('text')=='Blue shade':
+                img = convertor.color_to_blue()
+                self.img_slot = img
+                
+                img = Image.fromarray(img)
+
+                Label(f2, text='Processed Image').grid(row=0, column=1)
+
+                lb = Label(f2)
+                image = ImageTk.PhotoImage(img)
+                lb['image'] = image
+                lb.image = image
+                lb.grid(row=1, column=1)
+                self.pro_img = True
+            
+            elif e.widget.cget('text')=='Green shade':
+                img = convertor.color_to_green()
+                self.img_slot = img
+                
+                img = Image.fromarray(img)
+
+                Label(f2, text='Processed Image').grid(row=0, column=1)
+
+                lb = Label(f2)
+                image = ImageTk.PhotoImage(img)
+                lb['image'] = image
+                lb.image = image
+                lb.grid(row=1, column=1)
+                self.pro_img = True
+            elif e.widget.cget('text')=='Black shade':
+                pass
+           
+            
+            
 
         # Fuctions for the submenues
         def openfile():
@@ -70,7 +138,7 @@ class editor_interface:
             if self.pro_img == False:
                 msg.showerror("Error", 'First perform the operations on the image.')
             else:
-                pass
+                
         def Exit():
             self.root.destroy()
 

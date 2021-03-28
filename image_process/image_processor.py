@@ -10,6 +10,7 @@ class image_convertor:
         img = cv.imread(self.filename)
         img = cv.resize(img, (500,500))
         img = cv.cvtColor(img, cv.COLOR_BGR2GRAY)
+        img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 
         self.result = img
         return self.result
@@ -18,6 +19,7 @@ class image_convertor:
         img = cv.imread(self.filename)
         img = cv.resize(img, (500,500))
         img[:,:,2] = 115
+        img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 
         self.result = img
 
@@ -28,6 +30,7 @@ class image_convertor:
         img = cv.resize(img, (500,500))
 
         img[:,:,0] = 115
+        img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 
         self.result = img
 
@@ -38,6 +41,7 @@ class image_convertor:
         img = cv.resize(img, (500,500))
 
         img[:,:,1] = 115
+        img = cv.cvtColor(img, cv.COLOR_BGR2RGB)
 
         self.result = img
 
